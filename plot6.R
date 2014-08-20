@@ -2,8 +2,8 @@
 library(ggplot2)
 
 ## This first line will likely take a few seconds. Be patient!
-#NEI <- readRDS("summarySCC_PM25.rds")
-#SCC <- readRDS("Source_Classification_Code.rds")
+NEI <- readRDS("summarySCC_PM25.rds")
+SCC <- readRDS("Source_Classification_Code.rds")
 
 ## subset to just Baltimore City (fips==24510) and Los Angeles (fips==06037)
 BCLA <- subset(NEI, fips == "24510" | fips == "06037")
@@ -21,8 +21,10 @@ colnames(emissions) <- c("year","location","emissions.sum")
 ## rewrite the location(old fips) column variables to something friendlier
 emissions$location <- sapply(emissions$location, function(x) ifelse(x == "24510", "Baltimore City", "Los Angeles"))
 
+png(file = "plot6.png", width = 640, height = 480, bg = "white")
 #draw plot using ggplot2
-qplot(year, emissions.sum, data = emissions, geom = "point", size = I(4), col = location) +
+print(qplot(year, emissions.sum, data = emissions, geom = "point", size = I(4), col = location) +
     ## Add a linear prediction line to show the tendency.
     stat_smooth(method="lm", se=FALSE) +
-    labs(title = "Total motor vehicle emissions in Baltimore City vs Los Angeles", x  = "Year", y ="Total PM25 emissions (tons)")
+    labs(title = "Total motor vehicle emissions in Baltimore City vs Los Angeles", x  = "Year", y ="Total PM25 emissions (tons)"))
+dev.off()

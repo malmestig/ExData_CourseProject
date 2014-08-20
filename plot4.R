@@ -2,8 +2,8 @@
 library(ggplot2)
 
 ## This first line will likely take a few seconds. Be patient!
-#NEI <- readRDS("summarySCC_PM25.rds")
-#SCC <- readRDS("Source_Classification_Code.rds")
+NEI <- readRDS("summarySCC_PM25.rds")
+SCC <- readRDS("Source_Classification_Code.rds")
 
 ## First, reduce the dimension of the SCC dataframe by first grep-ing for all rows related to "coal" or "lignite" in the SCC.Level.Three variable. 
 ## then further narrow that down to only involve combustion by grep-ing for "combustion" in the SCC.Level.One variable 
@@ -17,8 +17,10 @@ NEI.coal.combustion <- NEI[NEI$SCC %in% coal.combustion$SCC,]
 emissions <- aggregate(NEI.coal.combustion$Emissions, by=list(NEI.coal.combustion$year), sum)
 colnames(emissions) <- c("year","emissions.sum")
 
+png(file = "plot4.png", width = 640, height = 480, bg = "white")
 #draw plot using ggplot2
-qplot(year, emissions.sum, data = emissions, geom = "point", size = I(4)) +
+print(qplot(year, emissions.sum, data = emissions, geom = "point", size = I(4)) +
     ## Add a linear prediction line to show the tendency.
     stat_smooth(method="lm", se=FALSE) +
-    labs(title = "Total coal combustion emissions across the United States", x  = "Year", y ="Total PM25 emissions (tons)")
+    labs(title = "Total coal combustion emissions across the United States", x  = "Year", y ="Total PM25 emissions (tons)"))
+dev.off()

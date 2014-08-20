@@ -2,8 +2,8 @@
 library(ggplot2)
 
 ## This first line will likely take a few seconds. Be patient!
-#NEI <- readRDS("summarySCC_PM25.rds")
-#SCC <- readRDS("Source_Classification_Code.rds")
+NEI <- readRDS("summarySCC_PM25.rds")
+SCC <- readRDS("Source_Classification_Code.rds")
 
 ## subset to just Baltimore City
 BC <- subset(NEI, fips == "24510")
@@ -18,8 +18,10 @@ BC.vehicles <- BC[BC$SCC %in% vehicles.all$SCC,]
 emissions <- aggregate(BC.vehicles$Emissions, by=list(BC.vehicles$year), sum)
 colnames(emissions) <- c("year","emissions.sum")
 
+png(file = "plot5.png", width = 640, height = 480, bg = "white")
 #draw plot using ggplot2
-qplot(year, emissions.sum, data = emissions, geom = "point", size = I(4)) +
+print(qplot(year, emissions.sum, data = emissions, geom = "point", size = I(4)) +
     ## Add a linear prediction line to show the tendency.
     stat_smooth(method="lm", se=FALSE) +
-    labs(title = "Total motor vehicle emissions in Baltimore City", x  = "Year", y ="Total PM25 emissions (tons)")
+    labs(title = "Total motor vehicle emissions in Baltimore City", x  = "Year", y ="Total PM25 emissions (tons)"))
+dev.off()

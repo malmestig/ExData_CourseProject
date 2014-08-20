@@ -10,16 +10,19 @@ BC <- subset(NEI, fips == "24510")
 emissions <- aggregate(BC$Emissions, by = list(BC$year), sum)
 colnames(emissions) <- c("year", "emissions.sum")
 
-##TODO: create png
+par(mar = c(4, 4, 2, 1), oma = c(0, 0, 2, 0))
+png(file = "plot2.png", width = 640, height = 480, bg = "white")
 ##draw plot using the base plotting system.
 with(emissions,
 {
     plot(year, emissions.sum,
-        main = "Total PM2 emissions over time for Baltimore City, Maryland",
+        main = "Total PM2 emissions over time in Baltimore City",
         xlab="Year",
-        ylab="Total PM2 emissions (tons)")
+        ylab="Total PM2 emissions (tons)",
+        pch = 20,
+        cex = 2.5)
     ## Add a linear prediction line to show the tendency.
     model <- lm(emissions.sum ~ year, emissions)
-    abline(model, lwd = 1)
+    abline(model, lwd = 1, col = "blue")
 })
-## dev.off
+dev.off()
