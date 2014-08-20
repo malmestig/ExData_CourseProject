@@ -21,6 +21,8 @@ colnames(emissions) <- c("year","location","emissions.sum")
 ## rewrite the location(old fips) column variables to something friendlier
 emissions$location <- sapply(emissions$location, function(x) ifelse(x == "24510", "Baltimore City", "Los Angeles"))
 
+# Set up some global options to customize the look of the plot.
+options(scipen = 10)
 png(file = "plot6.png", width = 640, height = 480, bg = "white")
 #draw plot using ggplot2
 print(qplot(year, emissions.sum, data = emissions, geom = "point", size = I(4), col = location) +

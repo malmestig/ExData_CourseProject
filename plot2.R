@@ -10,7 +10,9 @@ BC <- subset(NEI, fips == "24510")
 emissions <- aggregate(BC$Emissions, by = list(BC$year), sum)
 colnames(emissions) <- c("year", "emissions.sum")
 
-par(mar = c(4, 4, 2, 1), oma = c(0, 0, 2, 0))
+# Set up some global options to customize the look of the plot.
+options(scipen = 10)
+par(mar = c(4, 4, 2, 1), oma = c(2, 2, 2, 2))
 png(file = "plot2.png", width = 640, height = 480, bg = "white")
 ##draw plot using the base plotting system.
 with(emissions,

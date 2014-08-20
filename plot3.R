@@ -11,6 +11,8 @@ BC<-subset(NEI, fips == "24510")
 emissions <- aggregate(BC$Emissions, by=list(BC$year, BC$type), sum)
 colnames(emissions) <- c("year","type", "emissions.sum")
 
+# Set up some global options to customize the look of the plot.
+options(scipen = 10)
 png(file = "plot3.png", width = 640, height = 480, bg = "white")
 #draw plots using ggplot2
 print(qplot(year, emissions.sum, data = emissions, size = I(3), facets = . ~ type) +

@@ -18,6 +18,8 @@ BC.vehicles <- BC[BC$SCC %in% vehicles.all$SCC,]
 emissions <- aggregate(BC.vehicles$Emissions, by=list(BC.vehicles$year), sum)
 colnames(emissions) <- c("year","emissions.sum")
 
+# Set up some global options to customize the look of the plot.
+options(scipen = 10)
 png(file = "plot5.png", width = 640, height = 480, bg = "white")
 #draw plot using ggplot2
 print(qplot(year, emissions.sum, data = emissions, geom = "point", size = I(4)) +
